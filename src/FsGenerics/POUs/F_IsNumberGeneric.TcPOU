@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_IsNumberGeneric" Id="{9751e361-54cc-0768-339e-5e13de0d41e8}" SpecialFunc="None">
+    <Declaration><![CDATA[// Checks if the given generic value represents a numeric type.
+FUNCTION F_IsNumberGeneric : BOOL // TRUE if the generic value represents a numeric type.
+VAR_INPUT
+	Value : FsCommon.T_Generic; // The generic value to check.
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE Value.TypeClass OF
+	__SYSTEM.TYPE_CLASS.TYPE_BYTE,
+	__SYSTEM.TYPE_CLASS.TYPE_WORD,
+	__SYSTEM.TYPE_CLASS.TYPE_DWORD,
+	__SYSTEM.TYPE_CLASS.TYPE_LWORD,
+	__SYSTEM.TYPE_CLASS.TYPE_SINT,
+	__SYSTEM.TYPE_CLASS.TYPE_INT,
+	__SYSTEM.TYPE_CLASS.TYPE_DINT,
+	__SYSTEM.TYPE_CLASS.TYPE_LINT,
+	__SYSTEM.TYPE_CLASS.TYPE_USINT,
+	__SYSTEM.TYPE_CLASS.TYPE_UINT,
+	__SYSTEM.TYPE_CLASS.TYPE_UDINT,
+	__SYSTEM.TYPE_CLASS.TYPE_ULINT,
+	__SYSTEM.TYPE_CLASS.TYPE_REAL,
+	__SYSTEM.TYPE_CLASS.TYPE_LREAL,
+	__SYSTEM.TYPE_CLASS.TYPE_POINTER:
+		F_IsNumberGeneric := TRUE;
+	END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

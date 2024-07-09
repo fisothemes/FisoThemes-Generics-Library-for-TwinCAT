@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_DeallocateGeneric" Id="{4b979afb-b3a9-0286-064d-8d769ea4ee90}" SpecialFunc="None">
+    <Declaration><![CDATA[// Deallocates memory associated with a generic value and resets it to a default state.
+FUNCTION F_DeallocateGeneric
+VAR_IN_OUT
+	Value : FsCommon.T_Generic; // The generic value whose memory will be deallocated.
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FsCommon.F_DeallocateMemory(Value.pValue);
+Value.diSize := 0;
+Value.TypeClass := __SYSTEM.TYPE_CLASS.TYPE_NONE;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

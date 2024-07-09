@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_SwapGenericsParameters" Id="{57ec33c8-4605-086d-395f-e0dd044e32da}" SpecialFunc="None">
+    <Declaration><![CDATA[// Swaps the parameters of two generic values.
+FUNCTION F_SwapGenericsParameters
+VAR_IN_OUT
+	A : FsCommon.T_Generic; // Generic whose parameters will be swapped with B.
+	B : FsCommon.T_Generic; // Generic whose parameters will be swapped with B.
+END_VAR
+VAR
+	Tmp : FsCommon.T_Generic;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Tmp := A;
+A 	:= B;
+B 	:= Tmp;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

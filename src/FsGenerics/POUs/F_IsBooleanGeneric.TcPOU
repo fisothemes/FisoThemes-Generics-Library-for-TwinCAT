@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_IsBooleanGeneric" Id="{da9161cb-5ba8-0908-3b59-372c84a32db4}" SpecialFunc="None">
+    <Declaration><![CDATA[// Checks if the given generic value is of boolean type.
+FUNCTION F_IsBooleanGeneric : BOOL // TRUE if the generic value is boolean.
+VAR_INPUT
+	Value : FsCommon.T_Generic; // The generic value to check.
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_IsBooleanGeneric := Value.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_BOOL;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

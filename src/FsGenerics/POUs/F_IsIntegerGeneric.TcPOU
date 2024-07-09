@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_IsIntegerGeneric" Id="{5da5ee78-617c-0bf4-1940-e75ea63d88fe}" SpecialFunc="None">
+    <Declaration><![CDATA[// Checks if the given generic value is of integer type.
+FUNCTION F_IsIntegerGeneric : BOOL // TRUE if the generic value is integer.
+VAR_INPUT
+	Value : FsCommon.T_Generic; // The generic value to check.
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE Value.TypeClass OF
+	__SYSTEM.TYPE_CLASS.TYPE_BYTE,
+	__SYSTEM.TYPE_CLASS.TYPE_WORD,
+	__SYSTEM.TYPE_CLASS.TYPE_DWORD,
+	__SYSTEM.TYPE_CLASS.TYPE_LWORD,
+	__SYSTEM.TYPE_CLASS.TYPE_SINT,
+	__SYSTEM.TYPE_CLASS.TYPE_INT,
+	__SYSTEM.TYPE_CLASS.TYPE_DINT,
+	__SYSTEM.TYPE_CLASS.TYPE_LINT,
+	__SYSTEM.TYPE_CLASS.TYPE_USINT,
+	__SYSTEM.TYPE_CLASS.TYPE_UINT,
+	__SYSTEM.TYPE_CLASS.TYPE_UDINT,
+	__SYSTEM.TYPE_CLASS.TYPE_ULINT:
+		F_IsIntegerGeneric := TRUE;
+	END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

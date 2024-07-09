@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="PLAYGROUND" Id="{596f8c19-086f-41df-a389-d3bb6903a389}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'no_explicit_call' := 'direct call for this program is not allowed'} 
+PROGRAM INTERNAL PLAYGROUND
+VAR
+	nVal0 : DINT := 12;
+	nVal1 : DINT := 24;
+	dtDateTime : DT;
+	t_Value : REAL;
+	bStart : BOOL := TRUE;
+	Value : FsCommon.T_Generic;
+	Error : FsError.T_Error;
+	fbWithAdsLogger : FsError.FB_AdsErrorLogger;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF FsCommon.F_ResetOnTrue(bStart) THEN 
+	F_SwapAny(nVal0 , nVal1, Error => Error); 
+	IF Error.IsRaised THEN Error.LogMessage(fbWithAdsLogger); END_IF
+	END_IF
+
+
+(*
+F_CloneGeneric(Value, Error => Error);
+IF Error.IsRaised THEN 
+	// Handle error.
+	Error.LogMessage(fbWithAdsLogger);
+	END_IF
+	
+*)]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

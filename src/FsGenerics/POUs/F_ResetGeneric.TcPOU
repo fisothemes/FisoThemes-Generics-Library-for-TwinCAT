@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_ResetGeneric" Id="{d2624a9c-9839-0179-15c7-ff6509802396}" SpecialFunc="None">
+    <Declaration><![CDATA[// Resets the content and type information of a generic value.
+// [note] This function resets the internal state of the generic value 
+//        by setting its pointer, size, and type class to default values. 
+//        It does not deallocate or free any memory associated with the 
+//        generic value.
+FUNCTION F_ResetGeneric
+VAR_IN_OUT
+	Value : FsCommon.T_Generic; // The generic value to reset.
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Value.pValue := 0;
+Value.diSize := 0;
+Value.TypeClass := __SYSTEM.TYPE_CLASS.TYPE_NONE;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

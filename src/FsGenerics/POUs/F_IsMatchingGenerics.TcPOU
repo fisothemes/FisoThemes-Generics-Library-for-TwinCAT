@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_IsMatchingGenerics" Id="{d4156b01-7f22-08e3-0ff8-0059e53c8234}" SpecialFunc="None">
+    <Declaration><![CDATA[// Checks if two generic values match in type and size.
+// [note] For string types only their types are compared.
+FUNCTION F_IsMatchingGenerics : BOOL // TRUE if the generic values match in type and size (size is only for none string types).
+VAR_INPUT
+	A : FsCommon.T_Generic; // Generic value to compare with B.
+	B : FsCommon.T_Generic; // Generic value to compare with A.
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE A.TypeClass OF 
+	__SYSTEM.TYPE_CLASS.TYPE_STRING,
+	__SYSTEM.TYPE_CLASS.TYPE_WSTRING: 
+		F_IsMatchingGenerics := A.TypeClass = B.TypeClass;
+ELSE
+	F_IsMatchingGenerics := A.diSize = B.diSize AND A.TypeClass = B.TypeClass;
+	END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

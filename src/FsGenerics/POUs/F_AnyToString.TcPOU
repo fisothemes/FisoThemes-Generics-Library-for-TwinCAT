@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_AnyToString" Id="{64ace659-5643-0188-3bd9-4bc54c8cce11}" SpecialFunc="None">
+    <Declaration><![CDATA[// Converts a value of any type to its string representation.
+FUNCTION F_AnyToString : Tc2_System.T_MaxString
+VAR_INPUT
+	Value : ANY; // The string representation of the value.
+END_VAR
+VAR_OUTPUT
+	Error : FsError.T_Error; // Error information if the conversion fails.
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_AnyToString := F_GenericToString(Value, Error => Error);]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_AnyToGeneric" Id="{9d23a2fc-b2c2-4cd9-8947-dd6f2e5cf9c8}" SpecialFunc="None">
+    <Declaration><![CDATA[// Converts a value of any type to a generic type.
+FUNCTION F_AnyToGeneric : FsCommon.T_Generic
+VAR_INPUT
+	Value : ANY; // The value to be converted to a generic type.
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_AnyToGeneric := Value;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

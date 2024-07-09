@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_IsUnsignedIntegerGeneric" Id="{aa56935f-0017-0f36-0fe1-2c2990b444f6}" SpecialFunc="None">
+    <Declaration><![CDATA[// Checks if the given generic value is an unsigned integer type.
+FUNCTION F_IsUnsignedIntegerGeneric : BOOL // TRUE if the generic value is an unsigned integer type.
+VAR_INPUT
+	Value : FsCommon.T_Generic; // The generic value to check.
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE Value.TypeClass OF
+	__SYSTEM.TYPE_CLASS.TYPE_BYTE,
+	__SYSTEM.TYPE_CLASS.TYPE_WORD,
+	__SYSTEM.TYPE_CLASS.TYPE_DWORD,
+	__SYSTEM.TYPE_CLASS.TYPE_LWORD,
+	__SYSTEM.TYPE_CLASS.TYPE_USINT,
+	__SYSTEM.TYPE_CLASS.TYPE_UINT,
+	__SYSTEM.TYPE_CLASS.TYPE_UDINT,
+	__SYSTEM.TYPE_CLASS.TYPE_ULINT:
+		F_IsUnsignedIntegerGeneric := TRUE;
+	END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

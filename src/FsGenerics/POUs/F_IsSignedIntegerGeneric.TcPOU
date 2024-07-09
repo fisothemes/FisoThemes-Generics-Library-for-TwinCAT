@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_IsSignedIntegerGeneric" Id="{6d9f756c-60e0-0a24-38ee-20ef6f3d460f}" SpecialFunc="None">
+    <Declaration><![CDATA[// Checks if the given generic value represents a signed integer type.
+FUNCTION F_IsSignedIntegerGeneric : BOOL // TRUE if the generic value represents a signed integer type.
+VAR_INPUT
+	Value : FsCommon.T_Generic; // The generic value to check.
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE Value.TypeClass OF
+	__SYSTEM.TYPE_CLASS.TYPE_SINT,
+	__SYSTEM.TYPE_CLASS.TYPE_INT,
+	__SYSTEM.TYPE_CLASS.TYPE_DINT,
+	__SYSTEM.TYPE_CLASS.TYPE_LINT:
+		F_IsSignedIntegerGeneric := TRUE;
+	END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

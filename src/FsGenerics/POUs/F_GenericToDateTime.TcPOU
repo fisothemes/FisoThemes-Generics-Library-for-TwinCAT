@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_GenericToDateTime" Id="{d566fc33-f286-08be-1509-33fabc0d5af6}" SpecialFunc="None">
+    <Declaration><![CDATA[// Converts a generic value to a DT (DateTime) type based on its type class.
+// [note] This function handles different types and performs the conversion accordingly.
+//        If the type of the generic value is not supported for conversion to DT, 
+//        an error will be returned.
+FUNCTION F_GenericToDateTime : DT // The converted DateTime value.
+VAR_INPUT
+	Value : FsCommon.T_Generic; // The generic value to convert to DateTime.
+END_VAR
+VAR_OUTPUT
+	Error : FsError.T_Error; // Error information if the conversion fails.
+END_VAR
+VAR
+	uValue : FsCommon.U_Pointer := (AsVoidPointer := Value.pValue);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF uValue.AsVoidPointer = 0 THEN 
+	Error := FsError.F_CreateError(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_INVALID_POINTER);
+	RETURN; 
+	END_IF
+
+CASE Value.TypeClass OF 
+	__SYSTEM.TYPE_CLASS.TYPE_BOOL:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToBool^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_BYTE:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToByte^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_WORD:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DWORD:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToDWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LWORD:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToLWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_SINT:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToSint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_INT:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToInt^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DINT:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToDint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LINT:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToLint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_USINT:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToUSint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_UINT:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToUInt^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_UDINT:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToUDint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_ULINT:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToULint^);
+		
+   __SYSTEM.TYPE_CLASS.TYPE_REAL:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToReal^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LREAL:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToLReal^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_STRING:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToString^);
+		
+   __SYSTEM.TYPE_CLASS.TYPE_WSTRING:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToWString^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_TIME:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToTime^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DATE:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToDate^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DATEANDTIME:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToDateAndTime^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_TIMEOFDAY:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToTimeOfDay^);
+		
+	__SYSTEM.TYPE_CLASS.TYPE_LTIME:
+		F_GenericToDateTime := TO_DT(uValue.AsPointerToLTime^);
+ELSE
+	Error := FsError.F_CreateError(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_TYPE_MISMATCH);
+	END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

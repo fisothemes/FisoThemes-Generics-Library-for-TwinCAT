@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_GenericToString" Id="{5317011b-2f45-0f1e-1c7d-73f75f836602}" SpecialFunc="None">
+    <Declaration><![CDATA[// Converts a generic value to a string representation.
+FUNCTION F_GenericToString : Tc2_System.T_MaxString // The string representation of the generic value.
+VAR_INPUT
+	Value : FsCommon.T_Generic; // The generic value to be converted to a string.
+END_VAR
+VAR_OUTPUT
+	Error : FsError.T_Error; // Error information if the conversion fails.
+END_VAR
+VAR
+	uValue : FsCommon.U_Pointer := (AsVoidPointer := Value.pValue);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF uValue.AsVoidPointer = 0 THEN 
+	Error := FsError.F_CreateError(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_INVALID_POINTER);
+	RETURN; 
+	END_IF
+
+CASE Value.TypeClass OF 
+	__SYSTEM.TYPE_CLASS.TYPE_BOOL:
+		F_GenericToString := TO_STRING(uValue.AsPointerToBool^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_BYTE:
+		F_GenericToString := TO_STRING(uValue.AsPointerToByte^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_WORD:
+		F_GenericToString := TO_STRING(uValue.AsPointerToWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DWORD:
+		F_GenericToString := TO_STRING(uValue.AsPointerToDWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LWORD:
+		F_GenericToString := TO_STRING(uValue.AsPointerToLWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_SINT:
+		F_GenericToString := TO_STRING(uValue.AsPointerToSint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_INT:
+		F_GenericToString := TO_STRING(uValue.AsPointerToInt^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DINT:
+		F_GenericToString := TO_STRING(uValue.AsPointerToDint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LINT:
+		F_GenericToString := TO_STRING(uValue.AsPointerToLint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_USINT:
+		F_GenericToString := TO_STRING(uValue.AsPointerToUSint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_UINT:
+		F_GenericToString := TO_STRING(uValue.AsPointerToUInt^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_UDINT:
+		F_GenericToString := TO_STRING(uValue.AsPointerToUDint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_ULINT:
+		F_GenericToString := TO_STRING(uValue.AsPointerToULint^);
+		
+   __SYSTEM.TYPE_CLASS.TYPE_REAL:
+		F_GenericToString := TO_STRING(uValue.AsPointerToReal^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LREAL:
+		F_GenericToString := TO_STRING(uValue.AsPointerToLReal^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_STRING:
+		Tc2_Utilities.STRNCPY(ADR(F_GenericToString),
+							  uValue.AsPointerToString, 
+							 SIZEOF(F_GenericToString));
+		
+   __SYSTEM.TYPE_CLASS.TYPE_WSTRING:
+		Tc2_Utilities.WSTRING_TO_STRING2(ADR(F_GenericToString),
+										 uValue.AsPointerToWString,
+										 SIZEOF(F_GenericToString));
+		
+    __SYSTEM.TYPE_CLASS.TYPE_TIME:
+		F_GenericToString := TO_STRING(uValue.AsPointerToTime^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DATE:
+		F_GenericToString := TO_STRING(uValue.AsPointerToDate^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DATEANDTIME:
+		F_GenericToString := TO_STRING(uValue.AsPointerToDateAndTime^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_TIMEOFDAY:
+		F_GenericToString := TO_STRING(uValue.AsPointerToTimeOfDay^);
+		
+	__SYSTEM.TYPE_CLASS.TYPE_POINTER:
+		F_GenericToString := TO_STRING(uValue.AsVoidPointer);
+		
+	__SYSTEM.TYPE_CLASS.TYPE_LTIME:
+		F_GenericToString := TO_STRING(uValue.AsPointerToLTime^);
+ELSE
+	Error := FsError.F_CreateError(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_TYPE_MISMATCH);
+	END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

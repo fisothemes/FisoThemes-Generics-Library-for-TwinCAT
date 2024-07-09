@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_CloneGeneric" Id="{34e48f45-1433-0571-139a-37d68a19b057}" SpecialFunc="None">
+    <Declaration><![CDATA[// Clones a generic value by allocating memory and copying the contents.
+// [warning] This function performs dynamic memory allocation. Ensure proper error handling
+//           and resource management to avoid memory leaks or allocation failures.
+// [note] Strings are only copied to their terminating characters.
+FUNCTION F_CloneGeneric : FsCommon.T_Generic // The cloned generic value.
+VAR_INPUT
+	Value : FsCommon.T_Generic; // The generic value to be cloned.
+END_VAR
+VAR_OUTPUT
+	Error : FsError.T_Error; // Error information if cloning fails.
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF Value.pValue = 0 OR_ELSE Value.diSize = 0 THEN 
+	Error := FsError.F_CreateError(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_INVALID_INPUT);
+	F_CloneGeneric.diSize := 0;
+	F_CloneGeneric.TypeClass := FsCommon.T_TypeClass.TYPE_NONE;
+	RETURN; 
+	END_IF
+
+F_CloneGeneric.pValue := FsCommon.F_AllocateMemory(FsCommon.F_DintToSize(Value.diSize));
+
+IF F_CloneGeneric.pValue = 0 THEN
+	Error := FsError.F_CreateError(
+		FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+		FsError.E_GeneralErrorCode.ERR_MEMORY_ALLOCATION_FAILED);
+	F_CloneGeneric.diSize := 0;
+	F_CloneGeneric.TypeClass := __SYSTEM.TYPE_CLASS.TYPE_NONE;
+	RETURN;
+	END_IF
+	
+F_CloneGeneric.diSize := Value.diSize;
+F_CloneGeneric.TypeClass := Value.TypeClass;
+	
+CASE Value.TypeClass OF
+	__SYSTEM.TYPE_CLASS.TYPE_STRING:
+		Tc2_Utilities.STRNCPY(
+			F_CloneGeneric.pValue,
+			Value.pValue,
+			FsCommon.F_DintToSize(Value.diSize));
+			
+	__SYSTEM.TYPE_CLASS.TYPE_WSTRING:
+		Tc2_Utilities.WSTRNCPY(
+			F_CloneGeneric.pValue,
+			Value.pValue,
+			FsCommon.F_DintToSize(Value.diSize));
+ELSE
+	Tc2_System.MEMCPY(F_CloneGeneric.pValue, Value.pValue, FsCommon.F_DintToSize(Value.diSize));
+	END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

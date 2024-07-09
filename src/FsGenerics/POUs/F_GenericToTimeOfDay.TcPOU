@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_GenericToTimeOfDay" Id="{09f73d10-d024-0f9a-1a62-6ff1c6dbb389}" SpecialFunc="None">
+    <Declaration><![CDATA[// Converts a generic value to TOD (Time of Day) based on its type class.
+FUNCTION F_GenericToTimeOfDay : TOD // The converted TOD value.
+VAR_INPUT
+	Value : FsCommon.T_Generic; // The generic value to convert to TOD.
+END_VAR
+VAR_OUTPUT
+	Error : FsError.T_Error; // Error information if conversion fails.
+END_VAR
+VAR
+	uValue : FsCommon.U_Pointer := (AsVoidPointer := Value.pValue);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF uValue.AsVoidPointer = 0 THEN 
+	Error := FsError.F_CreateError(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_INVALID_POINTER);
+	RETURN; 
+	END_IF
+
+CASE Value.TypeClass OF 
+	__SYSTEM.TYPE_CLASS.TYPE_BOOL:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToBool^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_BYTE:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToByte^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_WORD:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DWORD:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToDWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LWORD:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToLWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_SINT:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToSint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_INT:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToInt^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DINT:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToDint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LINT:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToLint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_USINT:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToUSint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_UINT:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToUInt^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_UDINT:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToUDint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_ULINT:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToULint^);
+		
+   __SYSTEM.TYPE_CLASS.TYPE_REAL:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToReal^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LREAL:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToLReal^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_STRING:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToString^);
+		
+   __SYSTEM.TYPE_CLASS.TYPE_WSTRING:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToWString^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_TIME:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToTime^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DATE:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToDate^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DATEANDTIME:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToDateAndTime^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_TIMEOFDAY:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToTimeOfDay^);
+		
+	__SYSTEM.TYPE_CLASS.TYPE_LTIME:
+		F_GenericToTimeOfDay := TO_TOD(uValue.AsPointerToLTime^);
+ELSE
+	Error := FsError.F_CreateError(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_TYPE_MISMATCH);
+	END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

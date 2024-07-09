@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_GenericToTime" Id="{a55cefdd-c59c-0d4c-229b-a5ea11f635ba}" SpecialFunc="None">
+    <Declaration><![CDATA[// Converts a generic value to LTIME based on its type class.
+FUNCTION F_GenericToTime : LTIME // The converted LTIME value.
+VAR_INPUT
+	Value : FsCommon.T_Generic; // The generic value to convert to LTIME.
+END_VAR
+VAR_OUTPUT
+	Error : FsError.T_Error; // Error information if the conversion fails.
+END_VAR
+VAR
+	uValue : FsCommon.U_Pointer := (AsVoidPointer := Value.pValue);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF uValue.AsVoidPointer = 0 THEN 
+	Error := FsError.F_CreateError(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_INVALID_POINTER);
+	RETURN; 
+	END_IF
+
+CASE Value.TypeClass OF 
+	__SYSTEM.TYPE_CLASS.TYPE_BOOL:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToBool^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_BYTE:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToByte^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_WORD:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DWORD:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToDWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LWORD:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToLWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_SINT:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToSint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_INT:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToInt^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DINT:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToDint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LINT:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToLint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_USINT:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToUSint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_UINT:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToUInt^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_UDINT:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToUDint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_ULINT:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToULint^);
+		
+   __SYSTEM.TYPE_CLASS.TYPE_REAL:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToReal^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LREAL:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToLReal^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_STRING:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToString^);
+		
+   __SYSTEM.TYPE_CLASS.TYPE_WSTRING:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToWString^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_TIME:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToTime^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DATE:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToDate^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DATEANDTIME:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToDateAndTime^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_TIMEOFDAY:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToTimeOfDay^);
+		
+	__SYSTEM.TYPE_CLASS.TYPE_LTIME:
+		F_GenericToTime := TO_LTIME(uValue.AsPointerToLTime^);
+ELSE
+	Error := FsError.F_CreateError(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_TYPE_MISMATCH);
+	END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

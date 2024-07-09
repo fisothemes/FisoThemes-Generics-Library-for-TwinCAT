@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_SwapAny" Id="{6258fcc5-ee99-0488-22ee-3c85ca5568ef}" SpecialFunc="None">
+    <Declaration><![CDATA[// Swaps the contents of two variables of any type, assuming they are of the same type and size.
+// [warning] This function only performs size checks and not type checks before swapping.
+FUNCTION F_SwapAny
+VAR_INPUT
+    A : ANY; // Variable A to swap.
+    B : ANY; // Variable B to swap.
+END_VAR
+VAR_OUTPUT
+    Error : FsError.T_Error; // Error information if swapping fails.
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF A.diSize <> B.diSize THEN 
+	Error := FsError.F_CreateError(FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+								   FsError.E_GeneralErrorCode.ERR_SIZE_MISMATCH);
+	RETURN;
+	END_IF
+
+FsCommon.F_SwapMemory(A.pValue, B.pValue, FsCommon.F_DintToSize(A.diSize));]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

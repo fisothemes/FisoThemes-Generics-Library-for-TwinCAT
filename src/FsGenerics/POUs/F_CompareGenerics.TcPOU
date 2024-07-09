@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_CompareGenerics" Id="{6aa1e556-15c2-0912-39c4-f5df832b60e0}" SpecialFunc="None">
+    <Declaration><![CDATA[// Compares two generic values and returns the result of the comparison.
+// [note] This function will always return a result. If the types are not directly comparable
+//        or if there is any ambiguity in the comparison, the `bIsAmbiguous` flag will be set to `TRUE`.
+FUNCTION F_CompareGenerics : FsCommon.E_Comparison // The result of the comparison.
+VAR_INPUT
+	A : FsCommon.T_Generic; // Generic value to compare to B.
+	B : FsCommon.T_Generic; // Generic value to compare to A.
+END_VAR
+VAR_OUTPUT
+	// If TRUE, the comparison was performed, but the result is ambiguous or unreliable.
+	// This can occur if the types of A and B are not directly comparable, or if the comparison logic does not support the specific types provided.
+	bIsAmbiguous : BOOL;
+END_VAR
+VAR
+	fA, fB 		: LREAL;
+	tA, tB 		: LTIME;
+	dtA, dtB 	: DT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF F_IsNumberGeneric(A) AND_THEN F_IsNumberGeneric(B) THEN
+	fA := F_GenericToNumber(A);
+	fB := F_GenericToNumber(B);
+	F_CompareGenerics := SEL(fA = fB,
+							 SEL(fA > fB, FsCommon.E_Comparison.Less, FsCommon.E_Comparison.Greater),
+							 FsCommon.E_Comparison.Equal);
+	RETURN;
+	END_IF
+	
+IF F_IsTimeGeneric(A) AND_THEN F_IsTimeGeneric(B) THEN
+	tA := F_GenericToTime(A);
+	tB := F_GenericToTime(B);
+	F_CompareGenerics := SEL(tA = tB, 
+							 SEL(tA > tB, FsCommon.E_Comparison.Less, FsCommon.E_Comparison.Greater),
+							 FsCommon.E_Comparison.Equal);
+	RETURN;
+	END_IF
+
+IF F_IsDateGeneric(A) AND_THEN F_IsDateGeneric(B) THEN
+	dtA := F_GenericToDateTime(A);
+	dtB := F_GenericToDateTime(B);
+	F_CompareGenerics := SEL(dtA = dtB, 
+							 SEL(dtA > dtB, FsCommon.E_Comparison.Less, FsCommon.E_Comparison.Greater),
+							 FsCommon.E_Comparison.Equal);
+	RETURN;
+	END_IF
+
+IF F_IsMatchingGenerics(A, B) THEN
+	bIsAmbiguous := A.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_USERDEF;
+	
+	A.diSize := SEL(A.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_STRING, 
+					SEL(A.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_WSTRING, A.diSize, TO_DINT(Tc2_Utilities.WLEN2(A.pValue))),
+					TO_DINT(Tc2_Utilities.LEN2(A.pValue)));
+					
+	B.diSize := SEL(B.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_STRING,
+					SEL(B.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_WSTRING, B.diSize, TO_DINT(Tc2_Utilities.WLEN2(B.pValue))),
+					TO_DINT(Tc2_Utilities.LEN2(B.pValue)));
+					
+	CASE Tc2_System.MEMCMP(A.pValue, B.pValue, TO_UDINT(MIN(A.diSize, B.diSize))) OF
+		-1		: F_CompareGenerics := FsCommon.E_Comparison.Less;
+		0		: F_CompareGenerics := FsCommon.E_Comparison.Equal;
+		1		: F_CompareGenerics := FsCommon.E_Comparison.Greater;
+		16#FF	:
+			bIsAmbiguous := TRUE; 
+			F_CompareGenerics := SEL(A.diSize = B.diSize,
+									 SEL(A.diSize > B.diSize, FsCommon.E_Comparison.Less, FsCommon.E_Comparison.Greater),
+									 FsCommon.E_Comparison.Equal);
+		END_CASE
+	RETURN;
+	END_IF
+	
+bIsAmbiguous := TRUE;
+F_CompareGenerics := SEL(A.TypeClass > B.TypeClass, FsCommon.E_Comparison.Less, FsCommon.E_Comparison.Greater);]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

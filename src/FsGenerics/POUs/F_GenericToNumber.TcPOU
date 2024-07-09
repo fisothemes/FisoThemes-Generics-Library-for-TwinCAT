@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_GenericToNumber" Id="{468eb079-fcff-0456-1525-9785ef382619}" SpecialFunc="None">
+    <Declaration><![CDATA[// Converts a generic value to an LREAL (floating-point number) based on its type class.
+FUNCTION F_GenericToNumber : LREAL // The converted floating-point number.
+VAR_INPUT
+	Value : FsCommon.T_Generic; // The generic value to convert to LREAL.
+END_VAR
+VAR_OUTPUT
+	Error : FsError.T_Error; // Error information if the conversion fails.
+END_VAR
+VAR
+	uValue : FsCommon.U_Pointer := (AsVoidPointer := Value.pValue);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF uValue.AsVoidPointer = 0 THEN 
+	Error := FsError.F_CreateError(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_INVALID_POINTER);
+	RETURN; 
+	END_IF
+
+CASE Value.TypeClass OF 
+	__SYSTEM.TYPE_CLASS.TYPE_BOOL:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToBool^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_BYTE:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToByte^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_WORD:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DWORD:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToDWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LWORD:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToLWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_SINT:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToSint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_INT:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToInt^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DINT:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToDint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LINT:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToLint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_USINT:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToUSint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_UINT:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToUInt^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_UDINT:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToUDint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_ULINT:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToULint^);
+		
+   __SYSTEM.TYPE_CLASS.TYPE_REAL:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToReal^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LREAL:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToLReal^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_STRING:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToString^);
+		
+   __SYSTEM.TYPE_CLASS.TYPE_WSTRING:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToWString^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_TIME:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToTime^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DATE:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToDate^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DATEANDTIME:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToDateAndTime^);
+
+    __SYSTEM.TYPE_CLASS.TYPE_TIMEOFDAY:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToTimeOfDay^);
+		
+	__SYSTEM.TYPE_CLASS.TYPE_POINTER:
+		F_GenericToNumber := TO_LREAL(uValue.AsVoidPointer);
+		
+	__SYSTEM.TYPE_CLASS.TYPE_LTIME:
+		F_GenericToNumber := TO_LREAL(uValue.AsPointerToLTime^);
+ELSE
+	Error := FsError.F_CreateError(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_TYPE_MISMATCH);
+	END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

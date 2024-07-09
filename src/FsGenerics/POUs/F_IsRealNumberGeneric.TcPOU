@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_IsRealNumberGeneric" Id="{1aad7acb-a07f-07d5-30aa-0646f52e840e}" SpecialFunc="None">
+    <Declaration><![CDATA[// Checks if the given generic value represents a real (floating-point) number type.
+FUNCTION F_IsRealNumberGeneric : BOOL // TRUE if the generic value represents a real (floating-point) number type.
+VAR_INPUT
+	Value : FsCommon.T_Generic; // The generic value to check.
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_IsRealNumberGeneric := 
+	Value.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_REAL
+	OR
+	Value.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_LREAL;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

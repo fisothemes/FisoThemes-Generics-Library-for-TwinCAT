@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_IsStringGeneric" Id="{d418a63d-1c63-0312-37f4-99d6c4a10166}" SpecialFunc="None">
+    <Declaration><![CDATA[// Checks if the given generic value is of string type.
+FUNCTION F_IsStringGeneric : BOOL // TRUE if the generic value is a string type.
+VAR_INPUT
+	Value : FsCommon.T_Generic; // The generic value to check.
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_IsStringGeneric := 
+	Value.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_STRING 
+	OR 
+	Value.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_WSTRING;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

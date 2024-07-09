@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_IsDateGeneric" Id="{d10a2b09-b8bc-0dc2-2851-4fe00224ee98}" SpecialFunc="None">
+    <Declaration><![CDATA[// Checks if the given generic value is of date or date and time type.
+FUNCTION F_IsDateGeneric : BOOL // TRUE if the generic value is date or date and time.
+VAR_INPUT
+	Value : FsCommon.T_Generic; // The generic value to check.
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_IsDateGeneric := 
+	Value.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_DATE 
+	OR 
+	Value.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_DATEANDTIME;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

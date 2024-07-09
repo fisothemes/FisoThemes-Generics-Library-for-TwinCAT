@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactors>
+  <Renames>
+    <RenamedType>
+      <Type guid="adaded94-a6ce-4996-8c28-38e2943acfad">F_SWAPGENERICS</Type>
+      <From>F_SwapGenerics</From>
+      <To>F_SwapGenericsParameters</To>
+    </RenamedType>
+  </Renames>
+</Refactors>

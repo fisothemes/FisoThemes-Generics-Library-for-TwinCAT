@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_IsTimeGeneric" Id="{12710b67-665b-06f7-3a84-9b156e319fbf}" SpecialFunc="None">
+    <Declaration><![CDATA[// Checks if the given generic value is of time-related type.
+FUNCTION F_IsTimeGeneric : BOOL // TRUE if the generic value is a time-related type.
+VAR_INPUT
+	Value : FsCommon.T_Generic; // The generic value to check.
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE Value.TypeClass OF
+	__SYSTEM.TYPE_CLASS.TYPE_TIME,
+	__SYSTEM.TYPE_CLASS.TYPE_LTIME,
+	__SYSTEM.TYPE_CLASS.TYPE_DATEANDTIME,
+	__SYSTEM.TYPE_CLASS.TYPE_TIMEOFDAY:
+		F_IsTimeGeneric := TRUE;
+	END_CASE
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

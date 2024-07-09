@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_CopyGeneric" Id="{37917ea3-dea7-0214-2714-e45d6b4fac78}" SpecialFunc="None">
+    <Declaration><![CDATA[// Copies data from the source generic value to the destination generic value.
+FUNCTION F_CopyGeneric
+VAR_IN_OUT
+	Source 		: FsCommon.T_Generic; // The source generic value from which data will be copied.
+	Destination : FsCommon.T_Generic; // The destination generic value to which data will be copied.
+END_VAR
+VAR_OUTPUT
+	Error : FsError.T_Error; // Error information if copying fails.
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF Source.diSize <> Destination.diSize THEN 
+	Error := FsError.F_CreateError(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_SIZE_MISMATCH);
+	RETURN; 
+	END_IF
+	
+IF Source.pValue = 0 OR Destination.pValue = 0 THEN 
+	Error := FsError.F_CreateError(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_INVALID_POINTER);
+	RETURN; 
+	END_IF
+	
+Tc2_System.MEMCPY(
+	Destination.pValue,
+	Source.pValue,
+	FsCommon.F_DintToSize(Destination.diSize));]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

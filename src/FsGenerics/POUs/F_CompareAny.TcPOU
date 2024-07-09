@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_CompareAny" Id="{7cec1e9f-6f3a-05da-0a51-76a297c81b11}" SpecialFunc="None">
+    <Declaration><![CDATA[// Compares two values of any type and returns the result of the comparison.
+// [note] This function will always return a result. If the types are not directly comparable
+//        or if there is any ambiguity in the comparison, the `bIsAmbiguous` flag will be set to `TRUE`.
+FUNCTION F_CompareAny : FsCommon.E_Comparison // The result of the comparison.
+VAR_INPUT
+	A : ANY; // Value to compare to B.
+	B : ANY; // Value to compare to A.
+END_VAR
+VAR_OUTPUT
+	// If TRUE, the comparison was performed, but the result is ambiguous or unreliable.
+	// This can occur if the types of A and B are not directly comparable, or if the comparison logic does not support the specific types provided.
+	bIsAmbiguous : BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_CompareAny := F_CompareGenerics(A, B, bIsAmbiguous => bIsAmbiguous);]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

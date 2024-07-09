@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_AllocateMemoryGeneric" Id="{69069d38-c832-04df-2cc9-f8a18594f10a}" SpecialFunc="None">
+    <Declaration><![CDATA[// Allocates memory for an array of generic values.
+// [warning] This function performs dynamic memory allocation. Ensure proper error handling
+//           and resource management to avoid memory leaks or allocation failures.
+FUNCTION F_AllocateMemoryGeneric : POINTER TO FsCommon.T_Generic // Pointer to the allocated memory for generic values.
+VAR_INPUT
+	Count : FsCommon.T_Size; // The number of `FsCommon.T_Generic` values to allocate memory for.
+END_VAR
+VAR_OUTPUT
+	Error : FsError.T_Error; // Error information if memory allocation fails.
+END_VAR
+VAR
+	i, End : FsCommon.T_Position;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF Count = 0 THEN RETURN; END_IF
+
+F_AllocateMemoryGeneric := FsCommon.F_AllocateMemory(Count * SIZEOF(FsCommon.T_Generic));
+
+IF F_AllocateMemoryGeneric = 0 THEN 
+	Error := FsError.F_CreateError(
+		FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+		FsError.E_GeneralErrorCode.ERR_MEMORY_ALLOCATION_FAILED);
+	RETURN;
+	END_IF
+
+End := FsCommon.F_SizeToPosition(Count) - 1;
+FOR i := 0 TO End DO
+	F_AllocateMemoryGeneric[i].TypeClass := __SYSTEM.TYPE_CLASS.TYPE_NONE;
+	END_FOR]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
