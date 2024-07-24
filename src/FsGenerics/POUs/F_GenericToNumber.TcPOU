@@ -10,10 +10,10 @@ VAR_OUTPUT
 	Error : FsError.T_Error; // Error information if the conversion fails.
 END_VAR
 VAR
-	uValue : FsCommon.U_Pointer := (AsVoidPointer := Value.pValue);
+	uValue : FsCommon.U_Pointer := (pVoid := Value.pValue);
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF uValue.AsVoidPointer = 0 THEN 
+      <ST><![CDATA[IF uValue.pVoid = 0 THEN 
 	Error := FsError.F_CreateError(
 			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
 			FsError.E_GeneralErrorCode.ERR_INVALID_POINTER);
@@ -22,73 +22,73 @@ END_VAR]]></Declaration>
 
 CASE Value.TypeClass OF 
 	__SYSTEM.TYPE_CLASS.TYPE_BOOL:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToBool^);
+		F_GenericToNumber := TO_LREAL(uValue.pBool^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_BYTE:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToByte^);
+		F_GenericToNumber := TO_LREAL(uValue.pByte^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_WORD:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToWord^);
+		F_GenericToNumber := TO_LREAL(uValue.pWord^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_DWORD:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToDWord^);
+		F_GenericToNumber := TO_LREAL(uValue.pDWord^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_LWORD:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToLWord^);
+		F_GenericToNumber := TO_LREAL(uValue.pLWord^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_SINT:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToSint^);
+		F_GenericToNumber := TO_LREAL(uValue.pSInt^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_INT:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToInt^);
+		F_GenericToNumber := TO_LREAL(uValue.pInt^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_DINT:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToDint^);
+		F_GenericToNumber := TO_LREAL(uValue.pDInt^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_LINT:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToLint^);
+		F_GenericToNumber := TO_LREAL(uValue.pLInt^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_USINT:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToUSint^);
+		F_GenericToNumber := TO_LREAL(uValue.pUSInt^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_UINT:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToUInt^);
+		F_GenericToNumber := TO_LREAL(uValue.pUInt^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_UDINT:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToUDint^);
+		F_GenericToNumber := TO_LREAL(uValue.pUDInt^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_ULINT:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToULint^);
+		F_GenericToNumber := TO_LREAL(uValue.pULInt^);
 		
    __SYSTEM.TYPE_CLASS.TYPE_REAL:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToReal^);
+		F_GenericToNumber := TO_LREAL(uValue.pReal^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_LREAL:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToLReal^);
+		F_GenericToNumber := TO_LREAL(uValue.pLReal^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_STRING:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToString^);
+		F_GenericToNumber := TO_LREAL(uValue.pString^);
 		
    __SYSTEM.TYPE_CLASS.TYPE_WSTRING:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToWString^);
+		F_GenericToNumber := TO_LREAL(uValue.pWString^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_TIME:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToTime^);
+		F_GenericToNumber := TO_LREAL(uValue.pTime^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_DATE:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToDate^);
+		F_GenericToNumber := TO_LREAL(uValue.pDate^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_DATEANDTIME:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToDateAndTime^);
+		F_GenericToNumber := TO_LREAL(uValue.pDateAndTime^);
 
     __SYSTEM.TYPE_CLASS.TYPE_TIMEOFDAY:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToTimeOfDay^);
+		F_GenericToNumber := TO_LREAL(uValue.pTimeOfDay^);
 		
 	__SYSTEM.TYPE_CLASS.TYPE_POINTER:
-		F_GenericToNumber := TO_LREAL(uValue.AsVoidPointer);
+		F_GenericToNumber := TO_LREAL(uValue.pNested^.pVoid);
 		
 	__SYSTEM.TYPE_CLASS.TYPE_LTIME:
-		F_GenericToNumber := TO_LREAL(uValue.AsPointerToLTime^);
+		F_GenericToNumber := TO_LREAL(uValue.pLTime^);
 ELSE
 	Error := FsError.F_CreateError(
 			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,

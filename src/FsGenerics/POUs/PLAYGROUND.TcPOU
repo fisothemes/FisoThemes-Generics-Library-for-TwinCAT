@@ -4,10 +4,12 @@
     <Declaration><![CDATA[{attribute 'no_explicit_call' := 'direct call for this program is not allowed'} 
 PROGRAM INTERNAL PLAYGROUND
 VAR
-	nVal0 : DINT := 12;
-	nVal1 : DINT := 24;
+	t_Value : STRING;
+	pValue : POINTER TO STRING := ADR(t_Value);
+	eComp : FsCommon.E_Comparison;
+	nVal0 : DT := DT#1970-1-1-0:0:24;
+	nVal1 : DT := DT#1970-1-1-0:0:12;
 	dtDateTime : DT;
-	t_Value : REAL;
 	bStart : BOOL := TRUE;
 	Value : FsCommon.T_Generic;
 	Error : FsError.T_Error;
@@ -15,7 +17,10 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF FsCommon.F_ResetOnTrue(bStart) THEN 
+      <ST><![CDATA[t_Value := F_GenericToString(F_AnyToGeneric(pValue));
+eComp := F_CompareGenerics(F_AnyToGeneric(nVal0), F_AnyToGeneric(nVal1));
+
+IF FsCommon.F_ResetOnTrue(bStart) THEN 
 	F_SwapAny(nVal0 , nVal1, Error => Error); 
 	IF Error.IsRaised THEN Error.LogMessage(fbWithAdsLogger); END_IF
 	END_IF

@@ -15,35 +15,33 @@ VAR_OUTPUT
 	bIsAmbiguous : BOOL;
 END_VAR
 VAR
-	fA, fB 		: LREAL;
-	tA, tB 		: LTIME;
-	dtA, dtB 	: DT;
+	uA, uB : FsCommon.U_Primitive;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF F_IsNumberGeneric(A) AND_THEN F_IsNumberGeneric(B) THEN
-	fA := F_GenericToNumber(A);
-	fB := F_GenericToNumber(B);
-	F_CompareGenerics := SEL(fA = fB,
-							 SEL(fA > fB, FsCommon.E_Comparison.Less, FsCommon.E_Comparison.Greater),
+	uA.fLReal := F_GenericToNumber(A);
+	uB.fLReal := F_GenericToNumber(B);
+	F_CompareGenerics := SEL(uA.fLReal = uB.fLReal,
+							 SEL(uA.fLReal > uB.fLReal, FsCommon.E_Comparison.Less, FsCommon.E_Comparison.Greater),
 							 FsCommon.E_Comparison.Equal);
 	RETURN;
 	END_IF
 	
 IF F_IsTimeGeneric(A) AND_THEN F_IsTimeGeneric(B) THEN
-	tA := F_GenericToTime(A);
-	tB := F_GenericToTime(B);
-	F_CompareGenerics := SEL(tA = tB, 
-							 SEL(tA > tB, FsCommon.E_Comparison.Less, FsCommon.E_Comparison.Greater),
+	uA.tLTime := F_GenericToTime(A);
+	uB.tLTime := F_GenericToTime(B);
+	F_CompareGenerics := SEL(uA.tLTime = uB.tLTime , 
+							 SEL(uA.tLTime > uB.tLTime, FsCommon.E_Comparison.Less, FsCommon.E_Comparison.Greater),
 							 FsCommon.E_Comparison.Equal);
 	RETURN;
 	END_IF
 
 IF F_IsDateGeneric(A) AND_THEN F_IsDateGeneric(B) THEN
-	dtA := F_GenericToDateTime(A);
-	dtB := F_GenericToDateTime(B);
-	F_CompareGenerics := SEL(dtA = dtB, 
-							 SEL(dtA > dtB, FsCommon.E_Comparison.Less, FsCommon.E_Comparison.Greater),
+	uA.dtDateAndTime := F_GenericToDateTime(A);
+	uB.dtDateAndTime := F_GenericToDateTime(B);
+	F_CompareGenerics := SEL(uA.dtDateAndTime = uB.dtDateAndTime, 
+							 SEL(uA.dtDateAndTime > uB.dtDateAndTime, FsCommon.E_Comparison.Less, FsCommon.E_Comparison.Greater),
 							 FsCommon.E_Comparison.Equal);
 	RETURN;
 	END_IF

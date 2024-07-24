@@ -10,10 +10,10 @@ VAR_OUTPUT
 	Error : FsError.T_Error; // Error information if the conversion fails.
 END_VAR
 VAR
-	uValue : FsCommon.U_Pointer := (AsVoidPointer := Value.pValue);
+	uValue : FsCommon.U_Pointer := (pVoid := Value.pValue);
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF uValue.AsVoidPointer = 0 THEN 
+      <ST><![CDATA[IF uValue.pVoid = 0 THEN 
 	Error := FsError.F_CreateError(
 			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
 			FsError.E_GeneralErrorCode.ERR_INVALID_POINTER);
@@ -22,77 +22,77 @@ END_VAR]]></Declaration>
 
 CASE Value.TypeClass OF 
 	__SYSTEM.TYPE_CLASS.TYPE_BOOL:
-		F_GenericToString := TO_STRING(uValue.AsPointerToBool^);
+		F_GenericToString := TO_STRING(uValue.pBool^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_BYTE:
-		F_GenericToString := TO_STRING(uValue.AsPointerToByte^);
+		F_GenericToString := TO_STRING(uValue.pByte^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_WORD:
-		F_GenericToString := TO_STRING(uValue.AsPointerToWord^);
+		F_GenericToString := TO_STRING(uValue.pWord^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_DWORD:
-		F_GenericToString := TO_STRING(uValue.AsPointerToDWord^);
+		F_GenericToString := TO_STRING(uValue.pDWord^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_LWORD:
-		F_GenericToString := TO_STRING(uValue.AsPointerToLWord^);
+		F_GenericToString := TO_STRING(uValue.pLWord^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_SINT:
-		F_GenericToString := TO_STRING(uValue.AsPointerToSint^);
+		F_GenericToString := TO_STRING(uValue.pSInt^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_INT:
-		F_GenericToString := TO_STRING(uValue.AsPointerToInt^);
+		F_GenericToString := TO_STRING(uValue.pInt^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_DINT:
-		F_GenericToString := TO_STRING(uValue.AsPointerToDint^);
+		F_GenericToString := TO_STRING(uValue.pDInt^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_LINT:
-		F_GenericToString := TO_STRING(uValue.AsPointerToLint^);
+		F_GenericToString := TO_STRING(uValue.pLInt^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_USINT:
-		F_GenericToString := TO_STRING(uValue.AsPointerToUSint^);
+		F_GenericToString := TO_STRING(uValue.pUSInt^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_UINT:
-		F_GenericToString := TO_STRING(uValue.AsPointerToUInt^);
+		F_GenericToString := TO_STRING(uValue.pUInt^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_UDINT:
-		F_GenericToString := TO_STRING(uValue.AsPointerToUDint^);
+		F_GenericToString := TO_STRING(uValue.pUDInt^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_ULINT:
-		F_GenericToString := TO_STRING(uValue.AsPointerToULint^);
+		F_GenericToString := TO_STRING(uValue.pULInt^);
 		
    __SYSTEM.TYPE_CLASS.TYPE_REAL:
-		F_GenericToString := TO_STRING(uValue.AsPointerToReal^);
+		F_GenericToString := TO_STRING(uValue.pReal^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_LREAL:
-		F_GenericToString := TO_STRING(uValue.AsPointerToLReal^);
+		F_GenericToString := TO_STRING(uValue.pLReal^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_STRING:
 		Tc2_Utilities.STRNCPY(ADR(F_GenericToString),
-							  uValue.AsPointerToString, 
+							  uValue.pMaxString, 
 							 SIZEOF(F_GenericToString));
 		
    __SYSTEM.TYPE_CLASS.TYPE_WSTRING:
 		Tc2_Utilities.WSTRING_TO_STRING2(ADR(F_GenericToString),
-										 uValue.AsPointerToWString,
+										 uValue.pMaxWString,
 										 SIZEOF(F_GenericToString));
 		
     __SYSTEM.TYPE_CLASS.TYPE_TIME:
-		F_GenericToString := TO_STRING(uValue.AsPointerToTime^);
+		F_GenericToString := TO_STRING(uValue.pTime^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_DATE:
-		F_GenericToString := TO_STRING(uValue.AsPointerToDate^);
+		F_GenericToString := TO_STRING(uValue.pDate^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_DATEANDTIME:
-		F_GenericToString := TO_STRING(uValue.AsPointerToDateAndTime^);
+		F_GenericToString := TO_STRING(uValue.pDateAndTime^);
 		
     __SYSTEM.TYPE_CLASS.TYPE_TIMEOFDAY:
-		F_GenericToString := TO_STRING(uValue.AsPointerToTimeOfDay^);
+		F_GenericToString := TO_STRING(uValue.pTimeOfDay^);
 		
 	__SYSTEM.TYPE_CLASS.TYPE_POINTER:
-		F_GenericToString := TO_STRING(uValue.AsVoidPointer);
+		F_GenericToString := TO_STRING(uValue.pNested^.pVoid);
 		
 	__SYSTEM.TYPE_CLASS.TYPE_LTIME:
-		F_GenericToString := TO_STRING(uValue.AsPointerToLTime^);
+		F_GenericToString := TO_STRING(uValue.pLTime^);
 ELSE
 	Error := FsError.F_CreateError(
 			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
